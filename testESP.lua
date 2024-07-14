@@ -1,6 +1,6 @@
 -- LocalScript in StarterPlayerScripts
 
--- Function to create a highlight and text label for a player's torso
+-- Function to create a highlight and text label for player's torso
 local function highlightPlayerTorso(player)
     -- Ensure the character exists
     local character = player.Character or player.CharacterAdded:Wait()
@@ -18,22 +18,38 @@ local function highlightPlayerTorso(player)
     highlight.OutlineTransparency = 0  -- No transparency for the outline
     highlight.Parent = torso
 
-    -- Create a BillboardGui for the TextLabel
-    local billboardGui = Instance.new("BillboardGui")
-    billboardGui.Adornee = torso
-    billboardGui.Size = UDim2.new(4, 0, 1, 0)
-    billboardGui.StudsOffset = Vector3.new(0, 3, 0)
-    billboardGui.AlwaysOnTop = true
-    billboardGui.Parent = torso
+    -- Create separate BillboardGuis for name and tag
+    local nameBillboardGui = Instance.new("BillboardGui")
+    nameBillboardGui.Adornee = torso
+    nameBillboardGui.Size = UDim2.new(2, 0, 1, 0.5)  -- Half size for name
+    nameBillboardGui.StudsOffset = Vector3.new(0, 2.5, 0)  -- Slightly lower offset
+    nameBillboardGui.AlwaysOnTop = true
+    nameBillboardGui.Parent = torso
 
-    -- Create the TextLabel
-    local textLabel = Instance.new("TextLabel")
-    textLabel.Size = UDim2.new(1, 0, 1, 0)
-    textLabel.BackgroundTransparency = 1  -- No background
-    textLabel.Text = player.Name  -- Display player name
-    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text
-    textLabel.TextScaled = true  -- Scale text to fit
-    textLabel.Parent = billboardGui
+    local tagBillboardGui = Instance.new("BillboardGui")
+    tagBillboardGui.Adornee = torso
+    tagBillboardGui.Size = UDim2.new(2, 0, 1, 0.5)  -- Half size for tag
+    tagBillboardGui.StudsOffset = Vector3.new(0, 3.5, 0)  -- Slightly higher offset
+    tagBillboardGui.AlwaysOnTop = true
+    tagBillboardGui.Parent = torso
+
+    -- Create TextLabels for name and tag
+    local nameTextLabel = Instance.new("TextLabel")
+    nameTextLabel.Size = UDim2.new(1, 0, 1, 0)
+    nameTextLabel.BackgroundTransparency = 1  -- No background
+    nameTextLabel.Text = player.Name  -- Display player name
+    nameTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text
+    nameTextLabel.TextScaled = true  -- Scale text to fit
+    nameTextLabel.Parent = nameBillboardGui
+
+    local tagTextLabel = Instance.new("TextLabel")
+    tagTextLabel.Size = UDim2.new(1, 0, 1, 0)
+    tagTextLabel.BackgroundTransparency = 1  -- No background
+    -- Replace "YourTagSource" with the way you access player tags
+    tagTextLabel.Text = player["YourTagSource"]  -- Display player tag
+    tagTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text
+    tagTextLabel.TextScaled = true  -- Scale text to fit
+    tagTextLabel.Parent = tagBillboardGui
 end
 
 -- Function to handle new players joining
