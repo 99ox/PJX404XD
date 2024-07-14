@@ -1,22 +1,20 @@
 -- LocalScript in StarterPlayerScripts
 
--- Function to create a highlight and text label for player's torso
-local function highlightPlayerTorso(player)
+-- Function to create colored outlines and name/tag displays for a player
+local function highlightPlayer(player)
     -- Ensure the character exists
     local character = player.Character or player.CharacterAdded:Wait()
     
     -- Wait for the torso part to be present
     local torso = character:WaitForChild("Torso") or character:WaitForChild("UpperTorso")
     
-    -- Create a Highlight instance
-    local highlight = Instance.new("Highlight")
-    highlight.Name = "TorsoHighlight"
-    highlight.Adornee = torso
-    highlight.FillColor = Color3.fromRGB(255, 215, 0)  -- Gold color
-    highlight.FillTransparency = 0.5  -- Semi-transparent fill
-    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)  -- White outline
-    highlight.OutlineTransparency = 0  -- No transparency for the outline
-    highlight.Parent = torso
+    -- Create a colored outline for the torso (optional)
+    local outline = Instance.new("Outline")
+    outline.Name = "TorsoOutline"
+    outline.Adornee = torso
+    outline.Thickness = 4  -- Adjust outline thickness
+    outline.Color = Color3.fromRGB(255, 255, 255)  -- White outline (optional)  -- Remove for transparency
+    outline.Parent = torso  -- Comment out if not using outline
 
     -- Create separate BillboardGuis for name and tag
     local nameBillboardGui = Instance.new("BillboardGui")
@@ -38,7 +36,12 @@ local function highlightPlayerTorso(player)
     nameTextLabel.Size = UDim2.new(1, 0, 1, 0)
     nameTextLabel.BackgroundTransparency = 1  -- No background
     nameTextLabel.Text = player.Name  -- Display player name
-    nameTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text
+    -- Set color based on team membership
+    if isCop(player) then  -- Replace 'isCop' with your team check logic
+        nameTextLabel.TextColor3 = Color3.fromRGB(0, 0, 255)  -- Blue for cops
+    else
+        nameTextLabel.TextColor3 = Color3.fromRGB(0, 255, 0)  -- Green for prisoners
+    end
     nameTextLabel.TextScaled = true  -- Scale text to fit
     nameTextLabel.Parent = nameBillboardGui
 
@@ -47,25 +50,25 @@ local function highlightPlayerTorso(player)
     tagTextLabel.BackgroundTransparency = 1  -- No background
     -- Replace "YourTagSource" with the way you access player tags
     tagTextLabel.Text = player["YourTagSource"]  -- Display player tag
-    tagTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text
+    -- Set color based on team membership
+    if isCop(player) then
+        tagTextLabel.TextColor3 = Color3.fromRGB(0, 0, 255)  -- Blue for cops
+    else
+        tagTextLabel.TextColor3 = Color3.fromRGB(0, 255, 0)  -- Green for prisoners
+    end
     tagTextLabel.TextScaled = true  -- Scale text to fit
     tagTextLabel.Parent = tagBillboardGui
+end
+
+-- Function to check if a player is a cop (replace with your actual logic)
+local function isCop(player)
+    -- Implement your method to determine if a player is on the cop team
+    -- This could involve checking a property, group membership, or other logic
+    return -- Replace with your actual return value (true if cop, false otherwise)
 end
 
 -- Function to handle new players joining
 local function onPlayerAdded(player)
     player.CharacterAdded:Connect(function(character)
-        highlightPlayerTorso(player)
-    end)
-    if player.Character then
-        highlightPlayerTorso(player)
+        highlightPlayer(player)
     end
-end
-
--- Connect to existing players
-for _, player in pairs(game.Players:GetPlayers()) do
-    onPlayerAdded(player)
-end
-
--- Connect to new players joining
-game.Players.PlayerAdded:Connect(onPlayerAdded)
