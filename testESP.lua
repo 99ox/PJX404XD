@@ -1,6 +1,6 @@
 -- LocalScript in StarterPlayerScripts
 
--- Function to create a colored outline for player's torso
+-- Function to create a highlight and text label for player's torso
 local function highlightPlayerTorso(player)
     -- Ensure the character exists
     local character = player.Character or player.CharacterAdded:Wait()
@@ -8,23 +8,15 @@ local function highlightPlayerTorso(player)
     -- Wait for the torso part to be present
     local torso = character:WaitForChild("Torso") or character:WaitForChild("UpperTorso")
     
-    -- Create an Outline instance
-    local outline = Instance.new("Outline")
-    outline.Name = "TorsoOutline"
-    outline.Adornee = torso
-    outline.Thickness = 4  -- Adjust outline thickness
-
-    -- Check team membership (replace with your actual logic)
-    local isTeammate = -- Check if player is on your team (replace with your condition)
-    
-    -- Set outline color based on team
-    if isTeammate then
-        outline.Color = Color3.fromRGB(0, 255, 0)  -- Green for teammates
-    else
-        outline.Color = Color3.fromRGB(255, 0, 0)  -- Red for enemies
-    end
-
-    outline.Parent = torso
+    -- Create a Highlight instance
+    local highlight = Instance.new("Highlight")
+    highlight.Name = "TorsoHighlight"
+    highlight.Adornee = torso
+    highlight.FillColor = Color3.fromRGB(255, 215, 0)  -- Gold color
+    highlight.FillTransparency = 0.5  -- Semi-transparent fill
+    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)  -- White outline
+    highlight.OutlineTransparency = 0  -- No transparency for the outline
+    highlight.Parent = torso
 
     -- Create separate BillboardGuis for name and tag
     local nameBillboardGui = Instance.new("BillboardGui")
@@ -46,8 +38,7 @@ local function highlightPlayerTorso(player)
     nameTextLabel.Size = UDim2.new(1, 0, 1, 0)
     nameTextLabel.BackgroundTransparency = 1  -- No background
     nameTextLabel.Text = player.Name  -- Display player name
-    -- Set your desired color for teammate names
-    nameTextLabel.TextColor3 = Color3.fromRGB(0, 255, 0)  -- Green (example)
+    nameTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text
     nameTextLabel.TextScaled = true  -- Scale text to fit
     nameTextLabel.Parent = nameBillboardGui
 
@@ -56,8 +47,7 @@ local function highlightPlayerTorso(player)
     tagTextLabel.BackgroundTransparency = 1  -- No background
     -- Replace "YourTagSource" with the way you access player tags
     tagTextLabel.Text = player["YourTagSource"]  -- Display player tag
-    -- Set your desired color for enemy names
-    tagTextLabel.TextColor3 = Color3.fromRGB(255, 0, 0)  -- Red (example)
+    tagTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text
     tagTextLabel.TextScaled = true  -- Scale text to fit
     tagTextLabel.Parent = tagBillboardGui
 end
