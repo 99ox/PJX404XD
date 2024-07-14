@@ -8,7 +8,7 @@ local function highlightPlayerTorso(player)
     -- Wait for the torso part to be present
     local torso = character:WaitForChild("Torso") or character:WaitForChild("UpperTorso")
     
-    -- Create a Highlight instance
+    -- Create a Highlight instance (optional)
     local highlight = Instance.new("Highlight")
     highlight.Name = "TorsoHighlight"
     highlight.Adornee = torso
@@ -16,7 +16,7 @@ local function highlightPlayerTorso(player)
     highlight.FillTransparency = 0.5  -- Semi-transparent fill
     highlight.OutlineColor = Color3.fromRGB(255, 255, 255)  -- White outline
     highlight.OutlineTransparency = 0  -- No transparency for the outline
-    highlight.Parent = torso
+    highlight.Parent = torso  -- Comment out if not using highlight
 
     -- Create separate BillboardGuis for name and tag
     local nameBillboardGui = Instance.new("BillboardGui")
@@ -38,7 +38,8 @@ local function highlightPlayerTorso(player)
     nameTextLabel.Size = UDim2.new(1, 0, 1, 0)
     nameTextLabel.BackgroundTransparency = 1  -- No background
     nameTextLabel.Text = player.Name  -- Display player name
-    nameTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text
+    -- Set your desired color for teammate names
+    nameTextLabel.TextColor3 = Color3.fromRGB(0, 255, 0)  -- Green (example)
     nameTextLabel.TextScaled = true  -- Scale text to fit
     nameTextLabel.Parent = nameBillboardGui
 
@@ -47,9 +48,20 @@ local function highlightPlayerTorso(player)
     tagTextLabel.BackgroundTransparency = 1  -- No background
     -- Replace "YourTagSource" with the way you access player tags
     tagTextLabel.Text = player["YourTagSource"]  -- Display player tag
-    tagTextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)  -- White text
+    -- Set your desired color for enemy names
+    tagTextLabel.TextColor3 = Color3.fromRGB(255, 0, 0)  -- Red (example)
     tagTextLabel.TextScaled = true  -- Scale text to fit
     tagTextLabel.Parent = tagBillboardGui
+
+    -- Check team membership (replace with your actual logic)
+    local isTeammate = -- Check if player is on your team (replace with your condition)
+    
+    -- Update colors based on team
+    if isTeammate then
+        nameTextLabel.TextColor3 = Color3.fromRGB(0, 255, 0)  -- Green for teammates
+    else
+        nameTextLabel.TextColor3 = Color3.fromRGB(255, 0, 0)  -- Red for enemies
+    end
 end
 
 -- Function to handle new players joining
